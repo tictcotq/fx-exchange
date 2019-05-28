@@ -14,6 +14,6 @@ storiesOf('ExchangeParty', module)
   .add('default', () =>
     <ExchangeParty
       wallets={WALLETS}
-      selectedCurrencyCode="EUR"
+      selectedCurrencyCode="GBP"
       onSelectCurrencyCode={action('onSelectCurrencyCode')} />
   );

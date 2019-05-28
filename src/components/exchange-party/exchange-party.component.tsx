@@ -18,6 +18,9 @@ export default ({
     onSelectCurrencyCode && onSelectCurrencyCode(ev.target.value);
   }
 
+  const selectedWallet = wallets.find((wallet: Wallet) =>
+    wallet.currencyCode === selectedCurrencyCode);
+
   return (
     <div className="exchange-party">
       <select value={selectedCurrencyCode} onChange={handleCurrencyChange}>
@@ -27,6 +30,7 @@ export default ({
           </option>
         )}
       </select>
+      <label>Balance: {selectedWallet && selectedWallet.balance}</label>
     </div>
   );
 }
