@@ -6,16 +6,24 @@ export interface ExchangePartyProps {
   selectedCurrencyCode?: string;
   amount?: number;
   onSelectCurrencyCode?: (currencyCode: string) => void;
+  onChangeAmount?: (amount: number) => void;
 }
 
 export default ({
   wallets = [],
   selectedCurrencyCode = '',
+  amount = 0,
   onSelectCurrencyCode,
+  onChangeAmount,
 }: ExchangePartyProps) => {
 
   const handleCurrencyChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
     onSelectCurrencyCode && onSelectCurrencyCode(ev.target.value);
+  }
+
+  const handleAmountChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const amount = +ev.target.value;
+    onChangeAmount && onChangeAmount(amount);
   }
 
   const selectedWallet = wallets.find((wallet: Wallet) =>
@@ -31,6 +39,7 @@ export default ({
         )}
       </select>
       <label>Balance: {selectedWallet && selectedWallet.balance}</label>
+      <input value={amount} onChange={handleAmountChange} />
     </div>
   );
 }
