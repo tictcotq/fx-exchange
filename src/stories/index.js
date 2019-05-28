@@ -1,19 +1,19 @@
 import React from 'react';
-
 import { storiesOf } from '@storybook/react';
+import ExchangeParty from '../components/exchange-party/exchange-party.component';
+import Wallet from '../models/wallet';
 import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
 
-import { Button, Welcome } from '@storybook/react/demo';
+const WALLETS: Wallet[] = [
+  { currencyCode: 'USD', currencySymbol: '$', balance: 201.13 },
+  { currencyCode: 'EUR', currencySymbol: '€', balance: 0 },
+  { currencyCode: 'GBP', currencySymbol: '£', balance: 100 },
+];
 
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
-
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => (
-    <Button onClick={action('clicked')}>
-      <span role="img" aria-label="so cool">
-        😀 😎 👍 💯
-      </span>
-    </Button>
-  ));
+storiesOf('ExchangeParty', module)
+  .add('default', () =>
+    <ExchangeParty
+      wallets={WALLETS}
+      selectedCurrencyCode="EUR"
+      onSelectCurrencyCode={action('onSelectCurrencyCode')} />
+  );
