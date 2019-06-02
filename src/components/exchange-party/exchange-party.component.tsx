@@ -1,5 +1,6 @@
 import React from 'react';
 import Wallet from '../../models/wallet';
+import { parseAndTrimFloat } from '../../services/number-format.service';
 
 export interface ExchangePartyProps {
   wallets?: Wallet[];
@@ -22,7 +23,7 @@ export default function ExchangeParty({
   }
 
   const handleAmountChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    const amount = +ev.target.value;
+    const amount = parseAndTrimFloat(ev.target.value, 2);
     onChangeAmount && onChangeAmount(amount);
   }
 
@@ -39,7 +40,7 @@ export default function ExchangeParty({
         )}
       </select>
       <label>Balance: {selectedWallet && selectedWallet.balance}</label>
-      <input value={amount} onChange={handleAmountChange} />
+      <input type="number" value={amount || ''} onChange={handleAmountChange} />
     </div>
   );
 }
