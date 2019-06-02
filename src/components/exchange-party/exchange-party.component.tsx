@@ -9,13 +9,13 @@ export interface ExchangePartyProps {
   onChangeAmount?: (amount: number) => void;
 }
 
-export default ({
+export default function ExchangeParty({
   wallets = [],
   selectedCurrencyCode = '',
   amount = 0,
   onSelectCurrencyCode,
   onChangeAmount,
-}: ExchangePartyProps) => {
+}: ExchangePartyProps) {
 
   const handleCurrencyChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
     onSelectCurrencyCode && onSelectCurrencyCode(ev.target.value);

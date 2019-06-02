@@ -1,31 +1,24 @@
 import React, { useEffect, useReducer } from 'react';
-import { fetchRates } from '../../api/rates.api';
 import ExchangeParty from '../../components/exchange-party/exchange-party.component';
+import RatesSnapshot from '../../models/rates-snapshot';
 import Wallet from '../../models/wallet';
-import { exchangeReducer } from './exchange.reducer';
-import { initState } from './exchange.state';
+import { exchangeFormReducer } from './exchange-form.reducer';
+import { initState } from './exchange-form.state';
 
 export interface ExchangeProps {
-  wallets: Wallet[]
+  wallets: Wallet[],
+  rates: RatesSnapshot | null,
 }
 
-const CURRENCIES = process.env.REACT_APP_SUPPORTED_CURRENCIES
-  ? process.env.REACT_APP_SUPPORTED_CURRENCIES.split(',')
-  : [];
-
-export default ({
+export default function ExchangeForm ({
   wallets,
-}: ExchangeProps) => {
-  const [{source, target}, dispatch] = useReducer(exchangeReducer, { wallets }, initState);
-
-  const refreshRates = async () => {
-    const data = await fetchRates(CURRENCIES);
-    dispatch({type: 'setRates', payload: data});
-  };
+  rates,
+}: ExchangeProps) {
+  const [{source, target}, dispatch] = useReducer(exchangeFormReducer, { wallets }, initState);
 
   useEffect(() => {
-    refreshRates();
-  }, []);
+    dispatch({type: 'setRates', payload: rates});
+  }, [rates]);
 
   return (
     <main className="exchange">

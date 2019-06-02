@@ -11,7 +11,7 @@ export enum ExchangeParty {
   Target = 'target',
 }
 
-export interface ExchangeState {
+export interface ExchangeFormState {
   source: ExchangePartyState,
   target: ExchangePartyState,
   wallets: Wallet[],
@@ -19,7 +19,7 @@ export interface ExchangeState {
   lastEdited?: ExchangeParty,
 }
 
-export const initState = ({wallets}: {wallets: Wallet[]}): ExchangeState => ({
+export const initState = ({wallets}: {wallets: Wallet[]}): ExchangeFormState => ({
   source: { amount: 0, wallet: wallets[0] },
   target: { amount: 0, wallet: wallets[1] },
   lastEdited: ExchangeParty.Source,

@@ -2,17 +2,6 @@ import axios from 'axios';
 import RatesSnapshot from '../models/rates-snapshot';
 
 export const fetchRates = async (currencyCodes: string[]): Promise<RatesSnapshot> => {
-
-  // return Promise.resolve({
-  //   timestamp: 1559278800,
-  //   base: 'USD',
-  //   rates: {
-  //     'EUR': .25,
-  //     'GBP': .5,
-  //     'USD': 1
-  //   }
-  // });
-
   const response = await axios.get(
     'https://openexchangerates.org/api/latest.json', {
       params: {
