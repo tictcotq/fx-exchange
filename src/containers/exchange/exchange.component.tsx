@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import ExchangeParty from '../../components/exchange-party/exchange-party.component';
 import Wallet from '../../models/wallet';
+import RatesSnapshot from '../../models/rates-snapshot';
 import { convert } from '../../services/currency-converter.service';
+import { fetchRates } from '../../api/rates.api';
 
 export interface ExchangeProps {
   wallets: Wallet[]
 }
 
-const RATES = {
-  timestamp: 1559278800,
-  base: 'USD',
-  rates: {
-    'EUR': 0.9,
-    'GBP': 0.8,
-    'USD': 1
-  }
-};
+// const RATES = {
+//   timestamp: 1559278800,
+//   base: 'USD',
+//   rates: {
+//     'EUR': 0.9,
+//     'GBP': 0.8,
+//     'USD': 1
+//   }
+// };
 
 export default ({
   wallets,
@@ -24,6 +26,7 @@ export default ({
   const [targetWallet, setTargetWallet] = useState<Wallet | null>(null);
   const [sourceAmount, setSourceAmount] = useState<number>(0);
   const [targetAmount, setTargetAmount] = useState<number>(0);
+  const [rates, setRates] = useState<RatesSnapshot | null>(null)
 
   const swapWallets = () => {
     setSourceWallet(targetWallet);
@@ -52,8 +55,8 @@ export default ({
     setSourceAmount(amount);
 
     let targetAmount = 0;
-    if (sourceWallet && targetWallet) {
-      targetAmount = convert(amount, sourceWallet.currencyCode, targetWallet.currencyCode, RATES);
+    if (rates && sourceWallet && targetWallet) {
+      targetAmount = convert(amount, sourceWallet.currencyCode, targetWallet.currencyCode, rates);
     }
     setTargetAmount(targetAmount);
   };
@@ -62,8 +65,8 @@ export default ({
     setTargetAmount(amount);
 
     let sourceAmount = 0;
-    if (sourceWallet && targetWallet) {
-      sourceAmount = convert(amount, targetWallet.currencyCode, sourceWallet.currencyCode, RATES);
+    if (rates && sourceWallet && targetWallet) {
+      sourceAmount = convert(amount, targetWallet.currencyCode, sourceWallet.currencyCode, rates);
     }
     setSourceAmount(sourceAmount);
   };
@@ -75,11 +78,20 @@ export default ({
 
   useEffect(() => {
     let targetAmount = 0;
-    if (sourceWallet && targetWallet) {
-      targetAmount = convert(sourceAmount, sourceWallet.currencyCode, targetWallet.currencyCode, RATES);
+    if (rates && sourceWallet && targetWallet) {
+      targetAmount = convert(sourceAmount, sourceWallet.currencyCode, targetWallet.currencyCode, rates);
     }
     setTargetAmount(targetAmount);
   }, [sourceWallet, targetWallet]);
+
+  const refreshRates = async () => {
+    const rates = await fetchRates();
+    setRates(rates);
+  };
+
+  useEffect(() => {
+    refreshRates();
+  }, []);
 
   return (
     <main className="exchange">
