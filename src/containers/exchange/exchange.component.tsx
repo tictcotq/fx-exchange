@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import ExchangeParty from '../../components/exchange-party/exchange-party.component';
 import Wallet from '../../models/wallet';
+import { convert } from '../../services/currency-converter.service';
 
 export interface ExchangeProps {
   wallets: Wallet[]
 }
 
-const RATE = 0.1;
+const RATES = {
+  timestamp: 1559278800,
+  base: 'USD',
+  rates: {
+    'EUR': 0.9,
+    'GBP': 0.8,
+    'USD': 1
+  }
+};
 
 export default ({
   wallets,
@@ -41,18 +50,36 @@ export default ({
 
   const handleChangeSourceAmount = (amount: number) => {
     setSourceAmount(amount);
-    setTargetAmount(amount / RATE);
+
+    let targetAmount = 0;
+    if (sourceWallet && targetWallet) {
+      targetAmount = convert(amount, sourceWallet.currencyCode, targetWallet.currencyCode, RATES);
+    }
+    setTargetAmount(targetAmount);
   };
 
   const handleChangeTargetAmount = (amount: number) => {
     setTargetAmount(amount);
-    setSourceAmount(amount * RATE);
+
+    let sourceAmount = 0;
+    if (sourceWallet && targetWallet) {
+      sourceAmount = convert(amount, targetWallet.currencyCode, sourceWallet.currencyCode, RATES);
+    }
+    setSourceAmount(sourceAmount);
   };
 
   useEffect(() => {
     wallets.length && setSourceWallet(wallets[0]);
     wallets.length > 1 && setTargetWallet(wallets[1]);
   }, [wallets]);
+
+  useEffect(() => {
+    let targetAmount = 0;
+    if (sourceWallet && targetWallet) {
+      targetAmount = convert(sourceAmount, sourceWallet.currencyCode, targetWallet.currencyCode, RATES);
+    }
+    setTargetAmount(targetAmount);
+  }, [sourceWallet, targetWallet]);
 
   return (
     <main className="exchange">
