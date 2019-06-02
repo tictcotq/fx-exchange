@@ -1,92 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
+import { fetchRates } from '../../api/rates.api';
 import ExchangeParty from '../../components/exchange-party/exchange-party.component';
 import Wallet from '../../models/wallet';
-import RatesSnapshot from '../../models/rates-snapshot';
-import { convert } from '../../services/currency-converter.service';
-import { fetchRates } from '../../api/rates.api';
+import { exchangeReducer } from './exchange.reducer';
+import { initState } from './exchange.state';
 
 export interface ExchangeProps {
   wallets: Wallet[]
 }
 
-// const RATES = {
-//   timestamp: 1559278800,
-//   base: 'USD',
-//   rates: {
-//     'EUR': 0.9,
-//     'GBP': 0.8,
-//     'USD': 1
-//   }
-// };
-
 export default ({
   wallets,
 }: ExchangeProps) => {
-  const [sourceWallet, setSourceWallet] = useState<Wallet | null>(null);
-  const [targetWallet, setTargetWallet] = useState<Wallet | null>(null);
-  const [sourceAmount, setSourceAmount] = useState<number>(0);
-  const [targetAmount, setTargetAmount] = useState<number>(0);
-  const [rates, setRates] = useState<RatesSnapshot | null>(null)
-
-  const swapWallets = () => {
-    setSourceWallet(targetWallet);
-    setTargetWallet(sourceWallet);
-  }
-
-  const handleSelectSourceCurrencyCode = (currencyCode: string) => {
-    if (targetWallet && currencyCode === targetWallet.currencyCode) {
-      swapWallets();
-    } else {
-      const wallet = wallets.find(wallet => wallet.currencyCode === currencyCode);
-      setSourceWallet(wallet || null);
-    }
-  };
-
-  const handleSelectTargetCurrencyCode = (currencyCode: string) => {
-    if (sourceWallet && currencyCode === sourceWallet.currencyCode) {
-      swapWallets();
-    } else {
-      const wallet = wallets.find(wallet => wallet.currencyCode === currencyCode);
-      setTargetWallet(wallet || null);
-    }
-  };
-
-  const handleChangeSourceAmount = (amount: number) => {
-    setSourceAmount(amount);
-
-    let targetAmount = 0;
-    if (rates && sourceWallet && targetWallet) {
-      targetAmount = convert(amount, sourceWallet.currencyCode, targetWallet.currencyCode, rates);
-    }
-    setTargetAmount(targetAmount);
-  };
-
-  const handleChangeTargetAmount = (amount: number) => {
-    setTargetAmount(amount);
-
-    let sourceAmount = 0;
-    if (rates && sourceWallet && targetWallet) {
-      sourceAmount = convert(amount, targetWallet.currencyCode, sourceWallet.currencyCode, rates);
-    }
-    setSourceAmount(sourceAmount);
-  };
-
-  useEffect(() => {
-    wallets.length && setSourceWallet(wallets[0]);
-    wallets.length > 1 && setTargetWallet(wallets[1]);
-  }, [wallets]);
-
-  useEffect(() => {
-    let targetAmount = 0;
-    if (rates && sourceWallet && targetWallet) {
-      targetAmount = convert(sourceAmount, sourceWallet.currencyCode, targetWallet.currencyCode, rates);
-    }
-    setTargetAmount(targetAmount);
-  }, [sourceWallet, targetWallet]);
+  const [{source, target}, dispatch] = useReducer(exchangeReducer, { wallets }, initState);
 
   const refreshRates = async () => {
-    const rates = await fetchRates();
-    setRates(rates);
+    const data = await fetchRates();
+    dispatch({type: 'setRates', payload: data});
   };
 
   useEffect(() => {
@@ -96,20 +26,20 @@ export default ({
   return (
     <main className="exchange">
       Exchange
-      {sourceWallet &&
+      {source.wallet &&
         <ExchangeParty
           wallets={wallets}
-          amount={sourceAmount}
-          selectedCurrencyCode={sourceWallet.currencyCode}
-          onSelectCurrencyCode={handleSelectSourceCurrencyCode}
-          onChangeAmount={handleChangeSourceAmount} />}
-      {targetWallet &&
+          amount={source.amount}
+          selectedCurrencyCode={source.wallet.currencyCode}
+          onSelectCurrencyCode={(currencyCode: string): void => dispatch({ type: 'setSourceCurrency', payload: currencyCode})}
+          onChangeAmount={(amount) => dispatch({ type: 'setSourceAmount', payload: amount })} />}
+      {target.wallet &&
         <ExchangeParty
           wallets={wallets}
-          amount={targetAmount}
-          selectedCurrencyCode={targetWallet.currencyCode}
-          onSelectCurrencyCode={handleSelectTargetCurrencyCode}
-          onChangeAmount={handleChangeTargetAmount} />}
+          amount={target.amount}
+          selectedCurrencyCode={target.wallet.currencyCode}
+          onSelectCurrencyCode={(currencyCode: string): void => dispatch({ type: 'setTargetCurrency', payload: currencyCode})}
+          onChangeAmount={(amount) => dispatch({ type: 'setTargetAmount', payload: amount })} />}
     </main>
   );
 }

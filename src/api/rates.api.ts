@@ -7,8 +7,8 @@ export const fetchRates = async (/*currencyCodes: string[]*/): Promise<RatesSnap
     timestamp: 1559278800,
     base: 'USD',
     rates: {
-      'EUR': 0.9,
-      'GBP': 0.8,
+      'EUR': .25,
+      'GBP': .5,
       'USD': 1
     }
   });
