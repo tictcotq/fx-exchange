@@ -1,21 +1,26 @@
 import axios from 'axios';
 import RatesSnapshot from '../models/rates-snapshot';
 
-export const fetchRates = async (/*currencyCodes: string[]*/): Promise<RatesSnapshot> => {
+export const fetchRates = async (currencyCodes: string[]): Promise<RatesSnapshot> => {
 
-  return Promise.resolve({
-    timestamp: 1559278800,
-    base: 'USD',
-    rates: {
-      'EUR': .25,
-      'GBP': .5,
-      'USD': 1
+  // return Promise.resolve({
+  //   timestamp: 1559278800,
+  //   base: 'USD',
+  //   rates: {
+  //     'EUR': .25,
+  //     'GBP': .5,
+  //     'USD': 1
+  //   }
+  // });
+
+  const response = await axios.get(
+    'https://openexchangerates.org/api/latest.json', {
+      params: {
+        'app_id': process.env.REACT_APP_FX_API_KEY,
+        'symbols': currencyCodes.join(',')
+      }
     }
-  });
+  );
 
-  // const { data } = await axios.get(
-  //   'https://openexchangerates.org/api/latest.json?app_id=4ac9539715d242f69ed81e50a5096126&symbols=USD,GBP,EUR'
-  // );
-  //
-  // return data;
+  return response.data;
 }

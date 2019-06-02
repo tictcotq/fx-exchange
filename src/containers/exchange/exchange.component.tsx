@@ -9,13 +9,17 @@ export interface ExchangeProps {
   wallets: Wallet[]
 }
 
+const CURRENCIES = process.env.REACT_APP_SUPPORTED_CURRENCIES
+  ? process.env.REACT_APP_SUPPORTED_CURRENCIES.split(',')
+  : [];
+
 export default ({
   wallets,
 }: ExchangeProps) => {
   const [{source, target}, dispatch] = useReducer(exchangeReducer, { wallets }, initState);
 
   const refreshRates = async () => {
-    const data = await fetchRates();
+    const data = await fetchRates(CURRENCIES);
     dispatch({type: 'setRates', payload: data});
   };
 
