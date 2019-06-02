@@ -1,5 +1,5 @@
 import React from 'react';
-import Exchange from '../../components/exchange-form/exchange-form.component';
+import ExchangeForm from '../../components/exchange-form/exchange-form.component';
 import { useCurrencies, useRates, useWallets } from './exchange-page.hooks';
 
 const REFRESH_RATE = 10*1000;
@@ -11,7 +11,7 @@ export default function ExchangePage() {
 
   return (
     <main className="exchange-page">
-      <Exchange wallets={wallets} rates={rates} />
+      <ExchangeForm wallets={wallets} rates={rates} />
     </main>
   );
 }
