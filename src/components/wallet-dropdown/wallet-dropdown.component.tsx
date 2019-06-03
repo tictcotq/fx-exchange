@@ -3,7 +3,7 @@ import Wallet from '../../models/wallet';
 import './wallet-dropdown.component.scss';
 
 export interface WalletDropdownProps {
-  wallets?: Wallet[],
+  wallets?: Wallet[];
   selectedWallet?: Wallet | null;
   onSelectWallet?: (wallet: Wallet) => void;
 }
