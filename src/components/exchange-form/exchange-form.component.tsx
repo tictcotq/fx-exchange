@@ -21,8 +21,7 @@ export default function ExchangeForm ({
   }, [rates]);
 
   return (
-    <main className="exchange">
-      Exchange
+    <div className="exchange-form">
       {source.wallet &&
         <ExchangeParty
           wallets={wallets}
@@ -38,6 +37,6 @@ export default function ExchangeForm ({
           selectedCurrencyCode={target.wallet.currencyCode}
           onSelectCurrencyCode={(currencyCode: string): void => dispatch({ type: 'setTargetCurrency', payload: currencyCode})}
           onChangeAmount={(amount) => dispatch({ type: 'setTargetAmount', payload: amount })} />}
-    </main>
+    </div>
   );
 }

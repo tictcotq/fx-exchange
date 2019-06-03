@@ -6,6 +6,7 @@ import ExchangePage from '../containers/exchange-page/exchange-page.component';
 import Wallet from '../models/wallet';
 import RatesSnapshot from '../models/rates-snapshot';
 import { action } from '@storybook/addon-actions';
+import '../index.scss';
 
 const WALLETS: Wallet[] = [
   { currencyCode: 'USD', currencySymbol: '$', balance: 201.13 },
