@@ -1,44 +1,32 @@
 import React from 'react';
 import Wallet from '../../models/wallet';
 import { parseAndTrimFloat } from '../../services/number-format.service';
+import WalletDropdown from '../wallet-dropdown/wallet-dropdown.component';
 
 export interface ExchangePartyProps {
   wallets?: Wallet[];
-  selectedCurrencyCode?: string;
+  selectedWallet?: Wallet | null;
   amount?: number;
-  onSelectCurrencyCode?: (currencyCode: string) => void;
+  onSelectWallet?: (wallet: Wallet) => void;
   onChangeAmount?: (amount: number) => void;
 }
 
 export default function ExchangeParty({
   wallets = [],
-  selectedCurrencyCode = '',
+  selectedWallet,
   amount = 0,
-  onSelectCurrencyCode,
+  onSelectWallet,
   onChangeAmount,
 }: ExchangePartyProps) {
-
-  const handleCurrencyChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
-    onSelectCurrencyCode && onSelectCurrencyCode(ev.target.value);
-  }
 
   const handleAmountChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const amount = parseAndTrimFloat(ev.target.value, 2);
     onChangeAmount && onChangeAmount(amount);
   }
 
-  const selectedWallet = wallets.find((wallet: Wallet) =>
-    wallet.currencyCode === selectedCurrencyCode);
-
   return (
     <div className="exchange-party">
-      <select value={selectedCurrencyCode} onChange={handleCurrencyChange}>
-        {wallets.map((wallet: Wallet): JSX.Element =>
-          <option key={wallet.currencySymbol} value={wallet.currencyCode}>
-            {wallet.currencyCode}({wallet.balance})
-          </option>
-        )}
-      </select>
+      <WalletDropdown wallets={wallets} selectedWallet={selectedWallet} onSelectWallet={onSelectWallet} />
       <label>Balance: {selectedWallet && selectedWallet.balance}</label>
       <input type="number" value={amount || ''} onChange={handleAmountChange} />
     </div>

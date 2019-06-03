@@ -1,5 +1,6 @@
 import { ExchangeFormState, ExchangeParty } from './exchange-form.state';
 import { convert } from '../../services/currency-converter.service';
+import Wallet from '../../models/wallet';
 
 export const exchangeFormReducer = (state: ExchangeFormState, action: any) => {
   switch (action.type) {
@@ -9,10 +10,10 @@ export const exchangeFormReducer = (state: ExchangeFormState, action: any) => {
       return setSourceAmount(state, action.payload);
     case 'setTargetAmount':
       return setTargetAmount(state, action.payload);
-    case 'setSourceCurrency':
-      return setSourceCurrency(state, action.payload);
-    case 'setTargetCurrency':
-      return setTargetCurrency(state, action.payload);
+    case 'setSourceWallet':
+      return setSourceWallet(state, action.payload);
+    case 'setTargetWallet':
+      return setTargetWallet(state, action.payload);
     default:
       return state;
   }
@@ -44,31 +45,29 @@ function setTargetAmount(state: ExchangeFormState, targetAmount: number): Exchan
   };
 }
 
-function setSourceCurrency(state: ExchangeFormState, currencyCode: string) {
-  if (state.target.wallet && currencyCode === state.target.wallet.currencyCode) {
+function setSourceWallet(state: ExchangeFormState, wallet: Wallet) {
+  if (state.target.wallet && wallet.currencyCode === state.target.wallet.currencyCode) {
     return swapWallets(state);
   } else {
-    const sourceWallet = state.wallets.find(wallet => wallet.currencyCode === currencyCode);
     return recalcAmounts({
       ...state,
       source: {
         ...state.source,
-        wallet: sourceWallet || null
+        wallet: wallet,
       }
     });
   }
 }
 
-function setTargetCurrency(state: ExchangeFormState, currencyCode: string) {
-  if (state.source.wallet && currencyCode === state.source.wallet.currencyCode) {
+function setTargetWallet(state: ExchangeFormState, wallet: Wallet) {
+  if (state.source.wallet && wallet.currencyCode === state.source.wallet.currencyCode) {
     return swapWallets(state);
   } else {
-    const targetWallet = state.wallets.find(wallet => wallet.currencyCode === currencyCode);
     return recalcAmounts({
       ...state,
       target: {
         ...state.target,
-        wallet: targetWallet || null,
+        wallet: wallet,
       },
     });
   }

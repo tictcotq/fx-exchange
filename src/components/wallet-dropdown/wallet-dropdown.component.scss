@@ -1,0 +1,25 @@
+.wallet-dropdown {
+  display: inline-block;
+  position: relative;
+
+  select {
+    appearance: none;
+    border: 0;
+    background: 0;
+    font-size: 1.4rem;
+    color: #444;
+    padding-right: 1rem;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  &:after {
+    content: '⌄';
+    font-size: 2rem;
+    position: relative;
+    left: -1rem;
+    pointer-events: none;
+  }
+}

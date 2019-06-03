@@ -26,16 +26,16 @@ export default function ExchangeForm ({
         <ExchangeParty
           wallets={wallets}
           amount={source.amount}
-          selectedCurrencyCode={source.wallet.currencyCode}
-          onSelectCurrencyCode={(currencyCode: string): void => dispatch({ type: 'setSourceCurrency', payload: currencyCode})}
+          selectedWallet={source.wallet}
+          onSelectWallet={(wallet: Wallet): void => dispatch({ type: 'setSourceWallet', payload: wallet})}
           onChangeAmount={(amount) => dispatch({ type: 'setSourceAmount', payload: amount })} />}
 
       {target.wallet &&
         <ExchangeParty
           wallets={wallets}
           amount={target.amount}
-          selectedCurrencyCode={target.wallet.currencyCode}
-          onSelectCurrencyCode={(currencyCode: string): void => dispatch({ type: 'setTargetCurrency', payload: currencyCode})}
+          selectedWallet={target.wallet}
+          onSelectWallet={(wallet: Wallet): void => dispatch({ type: 'setTargetWallet', payload: wallet})}
           onChangeAmount={(amount) => dispatch({ type: 'setTargetAmount', payload: amount })} />}
     </div>
   );
