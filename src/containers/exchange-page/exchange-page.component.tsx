@@ -9,7 +9,8 @@ export default function ExchangePage() {
   const wallets = useWallets();
   const currencyCodes = useCurrencyCodes(wallets);
   const rates = useRates(currencyCodes, REFRESH_RATE);
-  const [{source, target}, actions] = useExchangePage(wallets, rates);
+  const { state, actions, selection } = useExchangePage(wallets, rates);
+  const { source, target } = state;
 
   return (
     <main className="exchange-page">
@@ -25,6 +26,7 @@ export default function ExchangePage() {
         onChangeTargetAmount={actions.setTargetAmount}
         onSelectSourceWallet={actions.setSourceWallet}
         onSelectTargetWallet={actions.setTargetWallet} />
+      <button disabled={!selection.canExchange}>Exchange</button>
     </main>
   );
 }
