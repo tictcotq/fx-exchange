@@ -26,13 +26,21 @@ export default function ExchangeParty({
   return (
     <div className={classnames('exchange-party', className)}>
       <div className="exchange-party__inputs">
-        <WalletDropdown wallets={wallets} selectedWallet={selectedWallet} onSelectWallet={onSelectWallet} />
-        <AmountInput amount={amount} onChangeAmount={onChangeAmount} />
+        <WalletDropdown
+          wallets={wallets}
+          selectedWallet={selectedWallet}
+          onSelectWallet={onSelectWallet} />
+        <AmountInput
+          amount={amount}
+          onChangeAmount={onChangeAmount} />
       </div>
+
       { selectedWallet &&
         <div className="exchange-party__balance">
           <label>Balance:&nbsp;</label>
-          <AmountDisplay amount={selectedWallet.balance} currencySymbol={selectedWallet.currencySymbol} />
+          <AmountDisplay
+            amount={selectedWallet.balance}
+            currencySymbol={selectedWallet.currencySymbol} />
         </div>
       }
     </div>

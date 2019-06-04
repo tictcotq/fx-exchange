@@ -5,6 +5,7 @@ import Wallet from '../../models/wallet';
 import { exchangeFormReducer } from './exchange-form.reducer';
 import { initState } from './exchange-form.state';
 import './exchange-form.component.scss';
+import ExchangeRate from '../exchange-rate/exchange-rate.component';
 
 export interface ExchangeFormProps {
   wallets: Wallet[],
@@ -34,6 +35,15 @@ export default function ExchangeForm ({
           selectedWallet={source.wallet}
           onSelectWallet={(wallet: Wallet): void => dispatch({ type: 'setSourceWallet', payload: wallet})}
           onChangeAmount={(amount) => dispatch({ type: 'setSourceAmount', payload: amount })} />}
+
+      {source.wallet && target.wallet &&
+        <ExchangeRate
+          rates={rates}
+          sourceCurrencyCode={source.wallet.currencyCode}
+          sourceCurrencySymbol={source.wallet.currencySymbol}
+          targetCurrencyCode={target.wallet.currencyCode}
+          targetCurrencySymbol={target.wallet.currencySymbol} />
+      }
 
       {target.wallet &&
         <ExchangeParty
