@@ -1,0 +1,11 @@
+.exchange-party {
+  padding: 30px;
+
+  &__inputs {
+    display: flex;
+  }
+
+  .amount-input {
+    flex: 1 1 0;
+  }
+}

@@ -4,6 +4,7 @@ import RatesSnapshot from '../../models/rates-snapshot';
 import Wallet from '../../models/wallet';
 import { exchangeFormReducer } from './exchange-form.reducer';
 import { initState } from './exchange-form.state';
+import './exchange-form.component.scss';
 
 export interface ExchangeFormProps {
   wallets: Wallet[],
@@ -32,6 +33,7 @@ export default function ExchangeForm ({
 
       {target.wallet &&
         <ExchangeParty
+          className="exchange-form__party-target"
           wallets={wallets}
           amount={target.amount}
           selectedWallet={target.wallet}
