@@ -5,6 +5,7 @@ import WalletDropdown from '../wallet-dropdown/wallet-dropdown.component';
 import AmountInput from '../amount-input/amount-input.component';
 import './exchange-party.component.scss';
 import AmountDisplay from '../amount-display/amount-display.component';
+import { toMaxPrecision } from '../../services/number-format.service';
 
 export interface ExchangePartyProps {
   wallets?: Wallet[];
@@ -31,7 +32,7 @@ export default function ExchangeParty({
           selectedWallet={selectedWallet}
           onSelectWallet={onSelectWallet} />
         <AmountInput
-          amount={amount}
+          amount={toMaxPrecision(amount, 2)}
           onChangeAmount={onChangeAmount} />
       </div>
 

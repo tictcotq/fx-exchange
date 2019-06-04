@@ -1,5 +1,5 @@
 import React from 'react';
-import { parseAndTrimFloat } from '../../services/number-format.service';
+import { parseWithPrecision } from '../../services/number-format.service';
 import './amount-input.component.scss';
 
 export interface AmountInputProps {
@@ -16,7 +16,7 @@ export default function AmountInput({
   onChangeAmount,
 }: AmountInputProps) {
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    const amount = parseAndTrimFloat(ev.target.value, precision);
+    const amount = parseWithPrecision(ev.target.value, precision);
     onChangeAmount && onChangeAmount(amount);
   }
 
