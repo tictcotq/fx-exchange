@@ -1,14 +1,18 @@
 import RatesSnapshot from '../models/rates-snapshot';
+import { toMaxPrecision } from './number-format.service';
 
 export const convert = (
   amount: number,
   sourceCurrencyCode: string,
   targetCurrencyCode: string,
   rates: RatesSnapshot,
+  precision: number = 2,
 ): number => {
-  return sourceCurrencyCode === rates.base
+  const convertedAmount = sourceCurrencyCode === rates.base
     ? convertDirectly(amount, targetCurrencyCode, rates)
     : convertCrossCurrency(amount, sourceCurrencyCode, targetCurrencyCode, rates);
+
+  return toMaxPrecision(convertedAmount, precision);
 };
 
 function convertDirectly(

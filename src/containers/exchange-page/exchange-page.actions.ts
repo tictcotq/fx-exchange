@@ -9,6 +9,7 @@ export enum ExchangePageActionType {
   SetTargetAmount = 'SetTargetAmount',
   SetSourceWallet = 'SetSourceWallet',
   SetTargetWallet = 'SetTargetWallet',
+  Exchange = 'Exchange',
 }
 
 export interface ExchangePageActions {
@@ -18,13 +19,15 @@ export interface ExchangePageActions {
   setTargetAmount: (amount: number) => void;
   setSourceWallet: (wallet: Wallet) => void;
   setTargetWallet: (wallet: Wallet) => void;
+  exchange: () => void;
 }
 
 export const createActionDispatcher = (dispatch: Dispatch<any>): ExchangePageActions => ({
-  setRates: (rates: RatesSnapshot | null): void => dispatch({type: ExchangePageActionType.SetRates, payload: rates}),
-  setWallets: (wallets: Wallet[]): void => dispatch({type: ExchangePageActionType.SetWallets, payload: wallets}),
-  setSourceAmount: (amount: number): void => dispatch({ type: ExchangePageActionType.SetSourceAmount, payload: amount }),
-  setTargetAmount: (amount: number): void => dispatch({ type: ExchangePageActionType.SetTargetAmount, payload: amount }),
-  setSourceWallet: (wallet: Wallet): void => dispatch({ type: ExchangePageActionType.SetSourceWallet, payload: wallet}),
-  setTargetWallet: (wallet: Wallet): void => dispatch({ type: ExchangePageActionType.SetTargetWallet, payload: wallet}),
+  setRates: rates => dispatch({type: ExchangePageActionType.SetRates, payload: rates}),
+  setWallets: wallets => dispatch({type: ExchangePageActionType.SetWallets, payload: wallets}),
+  setSourceAmount: amount => dispatch({ type: ExchangePageActionType.SetSourceAmount, payload: amount }),
+  setTargetAmount: amount => dispatch({ type: ExchangePageActionType.SetTargetAmount, payload: amount }),
+  setSourceWallet: wallet => dispatch({ type: ExchangePageActionType.SetSourceWallet, payload: wallet}),
+  setTargetWallet: wallet => dispatch({ type: ExchangePageActionType.SetTargetWallet, payload: wallet}),
+  exchange: () => dispatch({ type: ExchangePageActionType.Exchange }),
 });

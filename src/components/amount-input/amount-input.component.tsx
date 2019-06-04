@@ -25,6 +25,7 @@ export default function AmountInput({
       <input
         type="number"
         value={amount || ''}
+        min={0}
         onChange={handleChange}
         placeholder={placeholder} />
     </div>

@@ -10,6 +10,7 @@ export const select = (state: ExchangePageState): ExchangePageSelection => ({
 
 function canExchange(state: ExchangePageState): boolean {
   return !!(state.source.wallet
+    && state.source.amount > 0
     && state.source.wallet.balance >= state.source.amount
     && state.target.wallet);
 }

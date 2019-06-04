@@ -5,7 +5,7 @@ import Wallet from '../../models/wallet';
 
 export const exchangeFormReducer = (state: ExchangePageState, action: any) => {
   switch (action.type) {
-    
+
     case ExchangePageActionType.SetWallets:
       return initState({wallets: action.payload});
 
@@ -23,6 +23,9 @@ export const exchangeFormReducer = (state: ExchangePageState, action: any) => {
 
     case ExchangePageActionType.SetTargetWallet:
       return setTargetWallet(state, action.payload);
+
+    case ExchangePageActionType.Exchange:
+      return exchange(state);
 
     default:
       return state;
@@ -113,4 +116,38 @@ function swapWallets(state: ExchangePageState) {
     source: { ...state.source, wallet: state.target.wallet },
     target: { ...state.target, wallet: state.source.wallet },
   });
+}
+
+function exchange(state: ExchangePageState) {
+  if (!state.rates
+    || !state.source.wallet
+    || !state.target.wallet) {
+    return state;
+  }
+
+  let updatedSourceWallet = null;
+  let updatedTargetWallet = null;
+
+  const wallets = state.wallets.reduce((result: Wallet[], wallet: Wallet) => {
+    if (wallet.currencyCode === state.source.wallet!.currencyCode) {
+      updatedSourceWallet = {...wallet, balance: wallet.balance - state.source!.amount};
+      result.push(updatedSourceWallet);
+    }
+    else if (wallet.currencyCode === state.target.wallet!.currencyCode) {
+      updatedTargetWallet = {...wallet, balance: wallet.balance + state.target!.amount};
+      result.push(updatedTargetWallet);
+    }
+    else {
+      result.push(wallet);
+    }
+
+    return result;
+  }, []);
+
+  return {
+    ...state,
+    wallets,
+    source: { ...state.source, wallet: updatedSourceWallet, amount: 0 },
+    target: { ...state.target, wallet: updatedTargetWallet, amount: 0 },
+  };
 }
