@@ -5,6 +5,11 @@
     display: flex;
   }
 
+  &__balance {
+    padding: 5px 0;
+    color: #aaa;
+  }
+
   .amount-input {
     flex: 1 1 0;
   }

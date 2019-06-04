@@ -4,6 +4,7 @@ import Wallet from '../../models/wallet';
 import WalletDropdown from '../wallet-dropdown/wallet-dropdown.component';
 import AmountInput from '../amount-input/amount-input.component';
 import './exchange-party.component.scss';
+import AmountDisplay from '../amount-display/amount-display.component';
 
 export interface ExchangePartyProps {
   wallets?: Wallet[];
@@ -26,9 +27,14 @@ export default function ExchangeParty({
     <div className={classnames('exchange-party', className)}>
       <div className="exchange-party__inputs">
         <WalletDropdown wallets={wallets} selectedWallet={selectedWallet} onSelectWallet={onSelectWallet} />
-        {/*<label>Balance: {selectedWallet && selectedWallet.balance}</label>*/}
         <AmountInput amount={amount} onChangeAmount={onChangeAmount} />
       </div>
+      { selectedWallet &&
+        <div className="exchange-party__balance">
+          <label>Balance:&nbsp;</label>
+          <AmountDisplay amount={selectedWallet.balance} currencySymbol={selectedWallet.currencySymbol} />
+        </div>
+      }
     </div>
   );
 }
