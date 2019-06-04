@@ -1,8 +1,16 @@
 .exchange-page {
 
-  .exchange-form {
+  @media(min-width: 768px) {
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    background: #eee;
+    padding: 30px;
+    padding-top: 0;
   }
 }

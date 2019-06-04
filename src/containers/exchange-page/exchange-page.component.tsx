@@ -26,9 +26,13 @@ export default function ExchangePage() {
         onChangeTargetAmount={actions.setTargetAmount}
         onSelectSourceWallet={actions.setSourceWallet}
         onSelectTargetWallet={actions.setTargetWallet} />
-      <button
-        disabled={!selection.canExchange}
-        onClick={actions.exchange}>Exchange</button>
+        
+      <div className="exchange-page__actions">
+        <button
+          className="button button--primary"
+          disabled={!selection.canExchange}
+          onClick={actions.exchange}>Exchange</button>
+      </div>
     </main>
   );
 }

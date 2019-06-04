@@ -14,3 +14,25 @@ html {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+.button {
+  &--primary {
+    background: #eb008d;
+    color: #fff;
+    padding: 16px 60px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all .2s;
+
+    &:hover:not(:disabled) {
+      background: #d2007e;
+      transition: all .2s;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background: #ea57aa;
+    }
+  }
+}

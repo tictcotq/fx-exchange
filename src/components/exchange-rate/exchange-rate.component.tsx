@@ -7,6 +7,7 @@ import './exchange-rate.component.scss';
 export interface ExchangeRateProps {
   rates: RatesSnapshot | null,
   amount?: number,
+  precision?: number,
   sourceCurrencyCode?: string | null,
   sourceCurrencySymbol: string | null,
   targetCurrencyCode?: string | null,
@@ -16,13 +17,14 @@ export interface ExchangeRateProps {
 export default function ExchangeRate({
   rates,
   amount = 1,
+  precision = 4,
   sourceCurrencyCode,
   sourceCurrencySymbol,
   targetCurrencySymbol,
   targetCurrencyCode,
 }: ExchangeRateProps): JSX.Element {
   const targetAmount = rates && sourceCurrencyCode && targetCurrencyCode
-    ? convert(amount, sourceCurrencyCode, targetCurrencyCode, rates)
+    ? convert(amount, sourceCurrencyCode, targetCurrencyCode, rates, precision)
     : 0;
 
   return (
@@ -36,7 +38,7 @@ export default function ExchangeRate({
       <AmountDisplay
         amount={targetAmount}
         currencySymbol={targetCurrencySymbol}
-        precision={4} />
+        precision={precision} />
     </div>
   );
 }
