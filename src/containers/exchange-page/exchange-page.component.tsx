@@ -1,14 +1,14 @@
 import React from 'react';
 import ExchangeForm from '../../components/exchange-form/exchange-form.component';
-import { useCurrencies, useRates, useWallets } from './exchange-page.hooks';
+import { useCurrencyCodes, useRates, useWallets } from './exchange-page.hooks';
 import './exchange-page.component.scss';
 
 const REFRESH_RATE = 10*1000;
 
 export default function ExchangePage() {
-  const currencies = useCurrencies();
-  const rates = useRates(currencies, REFRESH_RATE);
-  const wallets = useWallets(currencies);
+  const wallets = useWallets();
+  const currencyCodes = useCurrencyCodes(wallets);
+  const rates = useRates(currencyCodes, REFRESH_RATE);
 
   return (
     <main className="exchange-page">

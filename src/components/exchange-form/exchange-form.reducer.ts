@@ -1,9 +1,11 @@
-import { ExchangeFormState, ExchangeParty } from './exchange-form.state';
+import { ExchangeFormState, ExchangeParty, initState } from './exchange-form.state';
 import { convert } from '../../services/currency-converter.service';
 import Wallet from '../../models/wallet';
 
 export const exchangeFormReducer = (state: ExchangeFormState, action: any) => {
   switch (action.type) {
+    case 'setWallets':
+      return initState({wallets: action.payload});
     case 'setRates':
       return recalcAmounts({ ...state, rates: action.payload });
     case 'setSourceAmount':

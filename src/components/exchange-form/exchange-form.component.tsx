@@ -21,6 +21,10 @@ export default function ExchangeForm ({
     dispatch({type: 'setRates', payload: rates});
   }, [rates]);
 
+  useEffect(() => {
+    dispatch({type: 'setWallets', payload: wallets});
+  }, [wallets]);
+
   return (
     <div className="exchange-form">
       {source.wallet &&

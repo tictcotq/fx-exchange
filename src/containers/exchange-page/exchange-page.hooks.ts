@@ -1,33 +1,41 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { fetchRates } from '../../api/rates.api';
+import { fetchWallets } from '../../api/wallets.api';
 import RatesSnapshot from '../../models/rates-snapshot';
 import Wallet from '../../models/wallet';
 
 export const useRates = (currencies: string[], refreshInterval: number) => {
   const [rates, setRates] = useState<RatesSnapshot | null>(null);
 
-  const refreshRates = async () => {
-    const data = await fetchRates(currencies);
-    setRates(data);
+  const loadRates = async () => {
+    setRates(await fetchRates(currencies));
   };
 
   useEffect(() => {
-    refreshRates();
-    const intervalId = setInterval(refreshRates, refreshInterval);
+    loadRates();
+    const intervalId = setInterval(loadRates, refreshInterval);
     return clearInterval.bind(null, intervalId);
   }, []);
 
   return rates;
-}
+};
 
-export const useWallets = (currencies: string[]) =>
-  currencies.map((currencyCode: string, index: number): Wallet => ({
-    balance: index * 100, // fake data
-    currencyCode,
-    currencySymbol: currencyCode,
-}));
+export const useWallets = () => {
+  const [wallets, setWallets] = useState<Wallet[]>([]);
 
-export const useCurrencies = (): string[] =>
-  process.env.REACT_APP_SUPPORTED_CURRENCIES
-    ? process.env.REACT_APP_SUPPORTED_CURRENCIES.split(',')
-    : [];
+  const loadWallets = async (): Promise<void> => {
+    setWallets(await fetchWallets());
+  }
+
+  useEffect(() => {
+    loadWallets();
+  }, []);
+
+  return wallets;
+};
+
+export const useCurrencyCodes = (wallets: Wallet[]): string[] =>
+  useMemo(() =>
+    wallets.map((wallet: Wallet) => wallet.currencyCode),
+    [wallets]
+  );
