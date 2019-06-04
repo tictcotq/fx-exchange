@@ -47,7 +47,7 @@ describe('Currency Converter service', () => {
 
     // Assert
     // 100 EUR => 111.(1) USD => 88.(8) GBP
-    expect(result).toBe(100 / .9 * .8);
+    expect(result).toBe(88.89);
   });
 
   it('should return 0 if source currency is not present in cross conversion', () => {
