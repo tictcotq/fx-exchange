@@ -1,58 +1,62 @@
-import React, { useEffect, useReducer } from 'react';
+import React from 'react';
 import ExchangeParty from '../../components/exchange-party/exchange-party.component';
 import RatesSnapshot from '../../models/rates-snapshot';
 import Wallet from '../../models/wallet';
-import { exchangeFormReducer } from './exchange-form.reducer';
-import { initState } from './exchange-form.state';
-import './exchange-form.component.scss';
 import ExchangeRate from '../exchange-rate/exchange-rate.component';
+import './exchange-form.component.scss';
 
 export interface ExchangeFormProps {
-  wallets: Wallet[],
-  rates: RatesSnapshot | null,
+  wallets: Wallet[];
+  rates: RatesSnapshot | null;
+  sourceWallet?: Wallet | null;
+  sourceAmount?: number;
+  targetWallet?: Wallet | null;
+  targetAmount?: number;
+  onSelectSourceWallet?: (wallet: Wallet) => void;
+  onSelectTargetWallet?: (wallet: Wallet) => void;
+  onChangeSourceAmount?: (amount: number) => void;
+  onChangeTargetAmount?: (amount: number) => void;
 }
 
 export default function ExchangeForm ({
   wallets,
   rates,
+  sourceWallet,
+  sourceAmount,
+  targetWallet,
+  targetAmount,
+  onSelectSourceWallet,
+  onSelectTargetWallet,
+  onChangeSourceAmount,
+  onChangeTargetAmount,
 }: ExchangeFormProps) {
-  const [{source, target}, dispatch] = useReducer(exchangeFormReducer, { wallets }, initState);
-
-  useEffect(() => {
-    dispatch({type: 'setRates', payload: rates});
-  }, [rates]);
-
-  useEffect(() => {
-    dispatch({type: 'setWallets', payload: wallets});
-  }, [wallets]);
-
   return (
     <div className="exchange-form">
-      {source.wallet &&
+      {sourceWallet &&
         <ExchangeParty
           wallets={wallets}
-          amount={source.amount}
-          selectedWallet={source.wallet}
-          onSelectWallet={(wallet: Wallet): void => dispatch({ type: 'setSourceWallet', payload: wallet})}
-          onChangeAmount={(amount) => dispatch({ type: 'setSourceAmount', payload: amount })} />}
+          amount={sourceAmount}
+          selectedWallet={sourceWallet}
+          onSelectWallet={onSelectSourceWallet}
+          onChangeAmount={onChangeSourceAmount} />}
 
-      {source.wallet && target.wallet &&
+      {sourceWallet && targetWallet &&
         <ExchangeRate
           rates={rates}
-          sourceCurrencyCode={source.wallet.currencyCode}
-          sourceCurrencySymbol={source.wallet.currencySymbol}
-          targetCurrencyCode={target.wallet.currencyCode}
-          targetCurrencySymbol={target.wallet.currencySymbol} />
+          sourceCurrencyCode={sourceWallet.currencyCode}
+          sourceCurrencySymbol={sourceWallet.currencySymbol}
+          targetCurrencyCode={targetWallet.currencyCode}
+          targetCurrencySymbol={targetWallet.currencySymbol} />
       }
 
-      {target.wallet &&
+      {targetWallet &&
         <ExchangeParty
           className="exchange-form__party-target"
           wallets={wallets}
-          amount={target.amount}
-          selectedWallet={target.wallet}
-          onSelectWallet={(wallet: Wallet): void => dispatch({ type: 'setTargetWallet', payload: wallet})}
-          onChangeAmount={(amount) => dispatch({ type: 'setTargetAmount', payload: amount })} />}
+          amount={targetAmount}
+          selectedWallet={targetWallet}
+          onSelectWallet={onSelectTargetWallet}
+          onChangeAmount={onChangeTargetAmount} />}
     </div>
   );
 }

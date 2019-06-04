@@ -1,27 +1,35 @@
-import { ExchangeFormState, ExchangeParty, initState } from './exchange-form.state';
+import { ExchangePageState, ExchangeParty, initState } from './exchange-page.state';
 import { convert } from '../../services/currency-converter.service';
+import { ExchangePageActionType } from './exchange-page.actions';
 import Wallet from '../../models/wallet';
 
-export const exchangeFormReducer = (state: ExchangeFormState, action: any) => {
+export const exchangeFormReducer = (state: ExchangePageState, action: any) => {
   switch (action.type) {
-    case 'setWallets':
+    
+    case ExchangePageActionType.SetWallets:
       return initState({wallets: action.payload});
-    case 'setRates':
+
+    case ExchangePageActionType.SetRates:
       return recalcAmounts({ ...state, rates: action.payload });
-    case 'setSourceAmount':
+
+    case ExchangePageActionType.SetSourceAmount:
       return setSourceAmount(state, action.payload);
-    case 'setTargetAmount':
+
+    case ExchangePageActionType.SetTargetAmount:
       return setTargetAmount(state, action.payload);
-    case 'setSourceWallet':
+
+    case ExchangePageActionType.SetSourceWallet:
       return setSourceWallet(state, action.payload);
-    case 'setTargetWallet':
+
+    case ExchangePageActionType.SetTargetWallet:
       return setTargetWallet(state, action.payload);
+
     default:
       return state;
   }
 }
 
-function setSourceAmount(state: ExchangeFormState, sourceAmount: number): ExchangeFormState {
+function setSourceAmount(state: ExchangePageState, sourceAmount: number): ExchangePageState {
   let targetAmount = 0;
   if (state.source.wallet && state.target.wallet && state.rates) {
     targetAmount = convert(sourceAmount, state.source.wallet.currencyCode, state.target.wallet.currencyCode, state.rates);
@@ -34,7 +42,7 @@ function setSourceAmount(state: ExchangeFormState, sourceAmount: number): Exchan
   };
 }
 
-function setTargetAmount(state: ExchangeFormState, targetAmount: number): ExchangeFormState {
+function setTargetAmount(state: ExchangePageState, targetAmount: number): ExchangePageState {
   let sourceAmount = 0;
   if (state.source.wallet && state.target.wallet && state.rates) {
     sourceAmount = convert(targetAmount, state.target.wallet.currencyCode, state.source.wallet.currencyCode, state.rates);
@@ -47,7 +55,7 @@ function setTargetAmount(state: ExchangeFormState, targetAmount: number): Exchan
   };
 }
 
-function setSourceWallet(state: ExchangeFormState, wallet: Wallet) {
+function setSourceWallet(state: ExchangePageState, wallet: Wallet) {
   if (state.target.wallet && wallet.currencyCode === state.target.wallet.currencyCode) {
     return swapWallets(state);
   } else {
@@ -61,7 +69,7 @@ function setSourceWallet(state: ExchangeFormState, wallet: Wallet) {
   }
 }
 
-function setTargetWallet(state: ExchangeFormState, wallet: Wallet) {
+function setTargetWallet(state: ExchangePageState, wallet: Wallet) {
   if (state.source.wallet && wallet.currencyCode === state.source.wallet.currencyCode) {
     return swapWallets(state);
   } else {
@@ -75,7 +83,7 @@ function setTargetWallet(state: ExchangeFormState, wallet: Wallet) {
   }
 }
 
-function recalcAmounts(state: ExchangeFormState) {
+function recalcAmounts(state: ExchangePageState) {
   const canConvert = state.source.wallet && state.target.wallet && state.rates;
 
   return {
@@ -99,7 +107,7 @@ function recalcAmounts(state: ExchangeFormState) {
   }
 }
 
-function swapWallets(state: ExchangeFormState) {
+function swapWallets(state: ExchangePageState) {
   return recalcAmounts({
     ...state,
     source: { ...state.source, wallet: state.target.wallet },

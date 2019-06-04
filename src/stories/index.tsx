@@ -36,7 +36,12 @@ storiesOf('ExchangeParty', module)
 
 storiesOf('ExchangeForm', module)
   .add('default', () =>
-    <ExchangeForm wallets={WALLETS} rates={RATES} />
+    <ExchangeForm
+      wallets={WALLETS}
+      rates={RATES}
+      sourceWallet={WALLETS[0]}
+      targetWallet={WALLETS[1]}
+      sourceAmount={32.11} />
   );
 
 storiesOf('ExchangePage', module)
