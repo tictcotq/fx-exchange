@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 .exchange-party {
   padding: 30px;
 
@@ -7,7 +9,7 @@
 
   &__balance {
     padding: 5px 0;
-    color: #aaa;
+    color: $text-color--muted;
   }
 
   .amount-input {

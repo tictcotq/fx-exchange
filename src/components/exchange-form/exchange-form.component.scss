@@ -1,6 +1,8 @@
+@import '../../styles/variables';
+
 .exchange-form {
   &__party-target {
-    background: #eee;
+    background: $bg-color--accent;
   }
 
   .exchange-rate {

@@ -1,7 +1,9 @@
+@import '../../styles/variables';
+
 .exchange-rate {
-  border: 1px solid #ccc;
-  background: #fff;
-  color: #0075eb;
+  border: 1px solid $border-color;
+  background: $bg-color;
+  color: $brand-info;
   border-radius: 20px;
   text-align: center;
   padding: 6px 18px;

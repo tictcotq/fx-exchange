@@ -1,3 +1,5 @@
+@import '../../styles/variables';
+
 .wallet-dropdown {
   display: inline-block;
   position: relative;
@@ -7,7 +9,7 @@
     border: 0;
     background: 0;
     font-size: 1.4rem;
-    color: #444;
+    color: $input-color;
     padding-right: 1rem;
 
     &:focus {
