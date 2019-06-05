@@ -1,5 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Demo
+https://fx-exchange.now.sh
+
 ## Build Configuration (.env)
 `REACT_APP_FX_API_KEY` - [Open Exchange Rates](https://openexchangerates.org/) API key
 
