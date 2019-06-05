@@ -18,20 +18,15 @@ const RATES: RatesSnapshot = {
   timestamp: 1559278800,
   base: 'USD',
   rates: {
-    'EUR': .25,
-    'GBP': .5,
+    'EUR': 0.888124,
+    'GBP': 0.787775,
     'USD': 1
   }
 };
 
-storiesOf('ExchangeParty', module)
+storiesOf('ExchangePage', module)
   .add('default', () =>
-    <ExchangeParty
-      wallets={WALLETS}
-      selectedWallet={WALLETS[0]}
-      amount={30.25}
-      onSelectWallet={action('onSelectWallet')}
-      onChangeAmount={action('onChangeAmount')} />
+    <ExchangePage />
   );
 
 storiesOf('ExchangeForm', module)
@@ -41,10 +36,19 @@ storiesOf('ExchangeForm', module)
       rates={RATES}
       sourceWallet={WALLETS[0]}
       targetWallet={WALLETS[1]}
-      sourceAmount={32.11} />
+      sourceAmount={32.11}
+      onChangeSourceAmount={action('onChangeSourceAmount')}
+      onSelectSourceWallet={action('onSelectSourceWallet')}
+      onChangeTargetAmount={action('onChangeTargetAmount')}
+      onSelectTargetWallet={action('onSelectTargetWallet')} />
   );
 
-storiesOf('ExchangePage', module)
+storiesOf('ExchangeParty', module)
   .add('default', () =>
-    <ExchangePage />
+    <ExchangeParty
+      wallets={WALLETS}
+      selectedWallet={WALLETS[0]}
+      amount={30.25}
+      onSelectWallet={action('onSelectWallet')}
+      onChangeAmount={action('onChangeAmount')} />
   );

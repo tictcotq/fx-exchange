@@ -1,23 +1,20 @@
 import React from 'react';
 import ExchangeForm from '../../components/exchange-form/exchange-form.component';
-import { useCurrencyCodes, useExchangePage, useRates, useWallets } from './exchange-page.hooks';
+import { useExchangePage } from './exchange-page.hooks';
 import './exchange-page.component.scss';
 
 const REFRESH_RATE = 10*1000;
 
 export default function ExchangePage() {
-  const wallets = useWallets();
-  const currencyCodes = useCurrencyCodes(wallets);
-  const rates = useRates(currencyCodes, REFRESH_RATE);
-  const { state, actions, selection } = useExchangePage(wallets, rates);
+  const { state, actions, selection } = useExchangePage(REFRESH_RATE);
   const { source, target } = state;
 
   return (
     <main className="exchange-page">
       <h1 className="page-title">Exchange</h1>
       <ExchangeForm
-        wallets={wallets}
-        rates={rates}
+        wallets={state.wallets}
+        rates={state.rates}
         sourceWallet={source.wallet}
         targetWallet={target.wallet}
         sourceAmount={source.amount}
@@ -26,7 +23,7 @@ export default function ExchangePage() {
         onChangeTargetAmount={actions.setTargetAmount}
         onSelectSourceWallet={actions.setSourceWallet}
         onSelectTargetWallet={actions.setTargetWallet} />
-        
+
       <div className="exchange-page__actions">
         <button
           className="button button--primary"

@@ -15,7 +15,7 @@ export interface ExchangePageState {
   source: ExchangePartyState,
   target: ExchangePartyState,
   wallets: Wallet[],
-  rates?: RatesSnapshot,
+  rates: RatesSnapshot | null,
   lastEdited?: ExchangeParty,
 }
 
@@ -24,4 +24,5 @@ export const initState = ({wallets}: {wallets: Wallet[]}): ExchangePageState => 
   target: { amount: 0, wallet: wallets[1] },
   lastEdited: ExchangeParty.Source,
   wallets,
+  rates: null,
 });
